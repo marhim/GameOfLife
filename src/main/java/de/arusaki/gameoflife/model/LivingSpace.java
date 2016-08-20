@@ -6,7 +6,7 @@ package de.arusaki.gameoflife.model;
  * @author Marvin Himmelmeier
  * @since 20.08.2016
  */
-public class LivingSpace {
+public class LivingSpace implements Cloneable {
 
     private final int columns;
     private final int rows;
@@ -96,6 +96,24 @@ public class LivingSpace {
         }
 
         return stringBuilder.toString();
+    }
+
+    @Override
+    public LivingSpace clone() throws CloneNotSupportedException {
+        super.clone();
+        LivingSpace clonedLivingSpace = new LivingSpace(rows, columns);
+        clonedLivingSpace.setLivingCharacter(livingCharacter);
+        clonedLivingSpace.setDeadCharacter(deadCharacter);
+
+        for (int i = 0; i < livingSpace.length; i++) {
+            for (int j = 0; j < livingSpace[i].length; j++) {
+                if (livingSpace[i][j]) {
+                    clonedLivingSpace.reviveCellAt(i, j);
+                }
+            }
+        }
+
+        return clonedLivingSpace;
     }
 
     public int getColumns() {

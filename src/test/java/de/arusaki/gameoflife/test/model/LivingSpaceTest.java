@@ -146,4 +146,28 @@ public class LivingSpaceTest {
         assertEquals(livingSpaceStrBuilder, livingSpace3x2.printLivingSpaceAsString());
     }
 
+    @Test
+    public void testLivingSpaceCloning() {
+        int posX = 0;
+        int posY = 0;
+        char livingChar = 'L';
+        char deadChar = 'D';
+        livingSpace3x2.reviveCellAt(posX, posY);
+        livingSpace3x2.setLivingCharacter(livingChar);
+        livingSpace3x2.setDeadCharacter(deadChar);
+
+        LivingSpace clonedLivingSpace = null;
+        try {
+            clonedLivingSpace = livingSpace3x2.clone();
+        } catch (CloneNotSupportedException e) {
+            assertTrue("cloning Living Space failed with Exception", false);
+        }
+
+        assertTrue("Cell must be alive at (" + posX + ", " + posY + ")", clonedLivingSpace.isAliveAt(posX, posY));
+        assertEquals("Living character must be " + livingChar, livingSpace3x2.getLivingCharacter(), clonedLivingSpace.getLivingCharacter());
+        assertEquals("Living character must be " + deadChar, livingSpace3x2.getDeadCharacter(), clonedLivingSpace.getDeadCharacter());
+        assertEquals("row count must be " + livingSpace3x2.getRows(), livingSpace3x2.getRows(), clonedLivingSpace.getRows());
+        assertEquals("column count must be " + livingSpace3x2.getColumns(), livingSpace3x2.getColumns(), clonedLivingSpace.getColumns());
+    }
+
 }
