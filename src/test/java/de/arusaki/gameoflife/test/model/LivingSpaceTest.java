@@ -15,14 +15,14 @@ import static org.junit.Assert.*;
  */
 public class LivingSpaceTest {
 
-    private static final int COUNT_COLUMNS = 4;
     private static final int COUNT_ROWS = 3;
+    private static final int COUNT_COLUMNS = 4;
 
     private LivingSpace livingSpace3x2;
 
     @Before
     public void setUp() {
-        livingSpace3x2 = new LivingSpace(COUNT_COLUMNS, COUNT_ROWS);
+        livingSpace3x2 = new LivingSpace(COUNT_ROWS, COUNT_COLUMNS);
     }
 
     @After
@@ -46,12 +46,17 @@ public class LivingSpaceTest {
     }
 
     @Test
-    public void testReviveAtSuccessful() {
+    public void testReviveAtFirstCellPosition() {
         assertTrue("revive at (0, 0) must return true", livingSpace3x2.reviveCellAt(0, 0));
     }
 
     @Test
-    public void testReviveAtFailure() {
+    public void testReviveAtLastCellPosition() {
+        assertTrue("revive at (" + (COUNT_ROWS - 1) + ", " + (COUNT_COLUMNS - 1) + ") must return true", livingSpace3x2.reviveCellAt(COUNT_ROWS - 1, COUNT_COLUMNS - 1));
+    }
+
+    @Test
+    public void testReviveAtOutOfBounds() {
         assertFalse("revive at (-1, -1) must return false", livingSpace3x2.reviveCellAt(-1, -1));
     }
 
@@ -79,12 +84,28 @@ public class LivingSpaceTest {
     }
 
     @Test
+    public void testCountLivingNeighborsAtBottomRightCorner() {
+        livingSpace3x2.reviveCellAt(COUNT_ROWS - 1, COUNT_COLUMNS - 1);
+        livingSpace3x2.reviveCellAt(COUNT_ROWS - 2, COUNT_COLUMNS - 2);
+        assertEquals("living neighbors count must be 1", 1, livingSpace3x2.countLivingNeighborsAt(COUNT_ROWS - 1, COUNT_COLUMNS - 1));
+    }
+
+    @Test
     public void testCountLivingNeighborsAtTopLeftCornerWithEveryCellAroundAlive() {
         livingSpace3x2.reviveCellAt(0, 0);
         livingSpace3x2.reviveCellAt(0, 1);
         livingSpace3x2.reviveCellAt(1, 0);
         livingSpace3x2.reviveCellAt(1, 1);
         assertEquals("living neighbors count must be 3", 3, livingSpace3x2.countLivingNeighborsAt(0, 0));
+    }
+
+    @Test
+    public void testCountLivingNeighborsAtBottomRightCornerWithEveryCellAroundAlive() {
+        livingSpace3x2.reviveCellAt(COUNT_ROWS - 1, COUNT_COLUMNS - 1);
+        livingSpace3x2.reviveCellAt(COUNT_ROWS - 1, COUNT_COLUMNS - 2);
+        livingSpace3x2.reviveCellAt(COUNT_ROWS - 2, COUNT_COLUMNS - 1);
+        livingSpace3x2.reviveCellAt(COUNT_ROWS - 2, COUNT_COLUMNS - 2);
+        assertEquals("living neighbors count must be 3", 3, livingSpace3x2.countLivingNeighborsAt(COUNT_ROWS - 1, COUNT_COLUMNS - 1));
     }
 
     @Test
@@ -106,6 +127,23 @@ public class LivingSpaceTest {
         livingSpace3x2.reviveCellAt(2, 1);
         livingSpace3x2.reviveCellAt(2, 2);
         assertEquals("living neighbors count must be 8", 8, livingSpace3x2.countLivingNeighborsAt(1, 1));
+    }
+
+    @Test
+    public void testPrintLivingSpaceAsString() {
+        String livingSpaceStrBuilder = "O---" + '\n' +
+                "O---" + '\n' +
+                "O---" + '\n';
+        if (livingSpace3x2.getLivingCharacter() != 'O') {
+            livingSpace3x2.setLivingCharacter('O');
+        }
+        if (livingSpace3x2.getDeadCharacter() != '-') {
+            livingSpace3x2.setDeadCharacter('-');
+        }
+        livingSpace3x2.reviveCellAt(0, 0);
+        livingSpace3x2.reviveCellAt(1, 0);
+        livingSpace3x2.reviveCellAt(2, 0);
+        assertEquals(livingSpaceStrBuilder, livingSpace3x2.printLivingSpaceAsString());
     }
 
 }

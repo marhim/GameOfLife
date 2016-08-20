@@ -12,16 +12,19 @@ public class LivingSpace {
     private final int rows;
     private final boolean[][] livingSpace;
 
+    private char livingCharacter = 'O';
+    private char deadCharacter = '-';
+
     /**
      * Initializes the living space fields with given number of columns and rows.
      *
      * @param columns number of columns the living space should have
      * @param rows    number of rows the living space should have
      */
-    public LivingSpace(int columns, int rows) {
+    public LivingSpace(int rows, int columns) {
         this.columns = columns;
         this.rows = rows;
-        this.livingSpace = new boolean[columns][rows];
+        this.livingSpace = new boolean[rows][columns];
     }
 
     /**
@@ -63,7 +66,7 @@ public class LivingSpace {
         for (int i = posX - 1; i < posX + 2; i++) {
             for (int j = posY - 1; j < posY + 2; j++) {
                 // ignore given position and check out of bounds, if so continue with next iteration
-                if (!((i == posX && j == posY) || i < 0 || j < 0 || i >= columns || j >= rows)) {
+                if (!((i == posX && j == posY) || i < 0 || j < 0 || i >= rows || j >= columns)) {
                     if (livingSpace[i][j]) {
                         livingNeighborsCount++;
                     }
@@ -73,11 +76,49 @@ public class LivingSpace {
         return livingNeighborsCount;
     }
 
+    /**
+     * Returns String to picture the living space with editable characters for living or dead cells.
+     *
+     * @return Living space as String
+     */
+    public String printLivingSpaceAsString() {
+        StringBuilder stringBuilder = new StringBuilder();
+
+        for (boolean[] row: livingSpace) {
+            for (boolean cell : row) {
+                if (cell) {
+                    stringBuilder.append(livingCharacter);
+                } else {
+                    stringBuilder.append(deadCharacter);
+                }
+            }
+            stringBuilder.append('\n');
+        }
+
+        return stringBuilder.toString();
+    }
+
     public int getColumns() {
         return columns;
     }
 
     public int getRows() {
         return rows;
+    }
+
+    public char getLivingCharacter() {
+        return livingCharacter;
+    }
+
+    public void setLivingCharacter(char livingCharacter) {
+        this.livingCharacter = livingCharacter;
+    }
+
+    public char getDeadCharacter() {
+        return deadCharacter;
+    }
+
+    public void setDeadCharacter(char deadCharacter) {
+        this.deadCharacter = deadCharacter;
     }
 }
