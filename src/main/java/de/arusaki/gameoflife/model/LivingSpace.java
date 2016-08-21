@@ -28,15 +28,31 @@ public class LivingSpace implements Cloneable {
     }
 
     /**
-     * Set the Cell at given position alive.
+     * Reviving the Cell at given position.
      *
      * @param posX x-position
      * @param posY y-position
-     * @return true, if setting cell alive at given position, false if not
+     * @return true, if reviving cell at given position was successful, false if not
      */
     public boolean reviveCellAt(int posX, int posY) {
         try {
             livingSpace[posX][posY] = true;
+        } catch (ArrayIndexOutOfBoundsException ignored) {
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * Killing the Cell at given position.
+     *
+     * @param posX x-position
+     * @param posY y-position
+     * @return true, if killing cell at given position was successful, false if not
+     */
+    public boolean killCellAt(int posX, int posY) {
+        try {
+            livingSpace[posX][posY] = false;
         } catch (ArrayIndexOutOfBoundsException ignored) {
             return false;
         }
