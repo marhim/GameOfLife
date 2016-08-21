@@ -20,6 +20,9 @@ public class Main {
         livingSpace.reviveCellAt(2, 1);
         livingSpace.reviveCellAt(2, 2);
         System.out.println(livingSpace.printLivingSpaceAsString());
-        System.out.println(Engine.evolve(livingSpace).printLivingSpaceAsString());
+        livingSpace = Engine.evolve(livingSpace);
+        System.out.println(livingSpace.printLivingSpaceAsString());
+        livingSpace = Engine.evolve(livingSpace);
+        System.out.println(livingSpace.printLivingSpaceAsString());
     }
 }
