@@ -1,7 +1,10 @@
 package de.arusaki.gameoflife;
 
-import de.arusaki.gameoflife.model.LivingSpace;
-import de.arusaki.gameoflife.util.Engine;
+import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
 
 /**
  * Mainclass for Conway's Game of Life simulation.
@@ -9,20 +12,16 @@ import de.arusaki.gameoflife.util.Engine;
  * @author Marvin Himmelmeier
  * @since 20.08.2016
  */
-public class Main {
+public class Main extends Application {
 
     public static void main(String[] args) {
-        LivingSpace livingSpace = new LivingSpace(4, 5);
-        livingSpace.reviveCellAt(1, 1);
-        livingSpace.reviveCellAt(1, 2);
-        livingSpace.reviveCellAt(1, 3);
-        livingSpace.reviveCellAt(2, 0);
-        livingSpace.reviveCellAt(2, 1);
-        livingSpace.reviveCellAt(2, 2);
-        System.out.println(livingSpace.printLivingSpaceAsString());
-        livingSpace = Engine.evolve(livingSpace);
-        System.out.println(livingSpace.printLivingSpaceAsString());
-        livingSpace = Engine.evolve(livingSpace);
-        System.out.println(livingSpace.printLivingSpaceAsString());
+        launch(args);
+    }
+
+    public void start(Stage primaryStage) throws Exception {
+        Parent root = FXMLLoader.load(getClass().getResource("GameOfLife.fxml"));
+        primaryStage.setTitle("Conway's Game of Life");
+        primaryStage.setScene(new Scene(root, 1000, 700));
+        primaryStage.show();
     }
 }
